@@ -9,8 +9,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.io.InputStream;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import net.sf.jasperreports.engine.JRException;
+import controlador.report.ConnectionFactory;
+import controlador.report.ReportUtils;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 import javax.xml.namespace.QName;
@@ -49,6 +54,7 @@ public class Inicial extends javax.swing.JFrame {
         jButton5.setVisible(false);
         jButton6.setVisible(false);
         jButton7.setVisible(false);
+        jButton8.setVisible(false);
         this.setMinimumSize(this.getSize());
     }
     
@@ -64,6 +70,45 @@ public class Inicial extends javax.swing.JFrame {
             }
         });
     };
+    
+    public void abrirRelatorio(String dini, String dfin) {
+ 
+        /*
+         * Obtendo o arquivo do relatório.
+         * Note que estamos utilizando um InputStream para obter o arquivo que
+         * está dentro do nosso projeto. Fazendo isso, não teremos problema
+         * quando nosso projeto for empacotado em um .jar.
+         *
+         * Note que o caminho do .jasper inicia com /, ou seja, a raiz da
+         * localização das classes compiladas do nosso projeto
+         * (o pacote default).
+         *
+         * Utilize a aba Files (canto superior esquerdo) e veja que os arquivos
+         * .jasper e .jrxml são copiados para o diretório /build/classes
+         * e por consequencia para o .jar que for criado.
+         *
+         * Se não os estiver vendo, mande dar um Clean and Build no projeto
+         * (botão direito no nó raiz do projeto, Clean and Build (Limpar e Construir)
+         *
+         */
+        InputStream inputStream = getClass().getResourceAsStream( "/newReport/newReport.jasper" );
+        // mapa de parâmetros do relatório (ainda vamos aprender a usar)
+        Map parametros = new HashMap();
+        parametros.put("dini", String.valueOf(dini));
+        parametros.put("dfin", String.valueOf(dfin));
+        
+        try {
+            // abre o relatório
+            ReportUtils.openReport( "newReport", inputStream, parametros, ConnectionFactory.getConnection("jdbc:mysql://192.168.2.251:3306/painel", "Thiago", "root"));
+ 
+        } catch ( SQLException exc ) {
+            exc.printStackTrace();
+        } catch ( JRException exc ) {
+            exc.printStackTrace();
+        }
+ 
+    }
+    
     
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -96,6 +141,7 @@ public class Inicial extends javax.swing.JFrame {
         jLabel17 = new javax.swing.JLabel();
         jButton7 = new javax.swing.JButton();
         jLabel18 = new javax.swing.JLabel();
+        jButton8 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -208,6 +254,13 @@ public class Inicial extends javax.swing.JFrame {
 
         jLabel18.setText("Registros:");
 
+        jButton8.setText("Gerar Relatório");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -253,7 +306,8 @@ public class Inicial extends javax.swing.JFrame {
                                     .addComponent(jLtpref, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLtcert, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLtreg, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jButton8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -307,6 +361,8 @@ public class Inicial extends javax.swing.JFrame {
                 .addComponent(jLabel17)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton8)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -331,7 +387,7 @@ public class Inicial extends javax.swing.JFrame {
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         s.PreferencialProximo();
     }//GEN-LAST:event_jButton4ActionPerformed
-
+ 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         s.CertidaoProximo();
     }//GEN-LAST:event_jButton5ActionPerformed
@@ -395,7 +451,17 @@ public class Inicial extends javax.swing.JFrame {
         }else{
             jButton7.setVisible(true);
         }
+        
+        if(jButton8.isVisible()==true){
+            jButton8.setVisible(false);
+        }else{
+            jButton8.setVisible(true);
+        }
     }//GEN-LAST:event_jLabel17MouseClicked
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        this.abrirRelatorio("23-07-2015","25-07-2015");
+    }//GEN-LAST:event_jButton8ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -406,6 +472,7 @@ public class Inicial extends javax.swing.JFrame {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
