@@ -460,7 +460,7 @@ public class Inicial extends javax.swing.JFrame {
     }//GEN-LAST:event_jLabel17MouseClicked
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
-        this.abrirRelatorio("23-07-2015","25-07-2015");
+        this.abrirRelatorio("23-07-2015","07-08-2015");
     }//GEN-LAST:event_jButton8ActionPerformed
 
 

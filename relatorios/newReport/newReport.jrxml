@@ -29,7 +29,7 @@
 			<staticText>
 				<reportElement x="1" y="19" width="555" height="38" uuid="c319503c-44e2-4cec-bbcb-251c5a4f3190"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="Square721 BT" size="24"/>
+					<font fontName="SansSerif" size="24"/>
 				</textElement>
 				<text><![CDATA[Total de Atendimento Diário:]]></text>
 			</staticText>
